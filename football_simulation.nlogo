@@ -1,39 +1,56 @@
-; NetLogo Soccer Simulation - Step 1
+; NetLogo Soccer Simulation - Step 2
 
 breed [players player]
 breed [balls ball]
 
+globals [team-1-color team-2-color]
+
 ; Setup the environment
 to setup
   clear-all
-  create-players 2 [
+  set team-1-color blue
+  set team-2-color red
+  create-players 4 [
+    ifelse (who < 2)
+      [set color team-1-color]
+      [set color team-2-color]
     set shape "person"
     setxy random-xcor random-ycor
-    set color blue
     set size 2
   ]
   create-balls 1 [
     set shape "circle"
     setxy random-xcor random-ycor
-    set color red
+    set color white
   ]
   reset-ticks
 end
 
+; Main loop
+to go
+  move-players-with-ball
+  pass-ball
+  tick
+end
+
 ; Define player behavior
-to move-players
+to move-players-with-ball
   ask players [
-    ; For now, players will randomly wander
-    right random 360
-    forward 1
+    if any? balls in-radius 1 [
+      ; players with the ball move towards the goal
+      move-to-goal
+    ]
+    if not any? balls in-radius 1 [
+      ; Random movement for players without the ball
+      right random 360
+      forward 1
+    ]
   ]
 end
 
-; Main loop
-to go
-  move-players
-  pass-ball
-  tick
+to move-to-goal
+  ; defining goal positions and moving players there
+  ; to be implemented in next step
 end
 
 ; Passing the ball
@@ -47,7 +64,7 @@ to pass-ball
         ; Pass the ball to the chosen player
         ask balls [
           face target
-          fd 1 ; adjust this for ball speed
+          fd 3 ; adjust this for ball speed
         ]
       ]
     ]
