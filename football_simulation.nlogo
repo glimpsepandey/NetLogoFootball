@@ -29,8 +29,6 @@ to move-players
   ]
 end
 
-; NetLogo Soccer Simulation - Step 1 Continued
-
 ; Main loop
 to go
   move-players
