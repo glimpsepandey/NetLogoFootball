@@ -14,14 +14,18 @@ This project is a step-by-step development of a soccer simulation in NetLogo. It
 - Separate branches for each development step (e.g., `step-1`, `step-2`, etc.).
 - Step-specific README files provide details about each stage of development.
 
-## Current Progress: Step 2
-- Introduction of two teams with distinct colors (blue and red).
-- Players being able to direct the ball towards the team mate when in possession.
+## Current Progress: Step 3
+- Implemented team possession mechanics.
+- Players now move strategically towards the ball to gain possession.
 
 ## Previous Steps:
 #### Step 1
 - Basic player and ball setup.
 - Simple passing logic where players pass the ball to each other.
 
-## Next Steps:
-- Step 3 will focus on refining team strategies, improving player movements, and introducing goal mechanics.
+#### Step 2
+- Introduction of two teams with distinct colors (blue and red).
+- Players being able to direct the ball towards the team mate when in possession.
+
+## Next Steps
+- The next step will focus on enhancing team strategies and introducing goal-oriented player behaviors.
