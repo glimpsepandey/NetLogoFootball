@@ -1,15 +1,17 @@
-; NetLogo Soccer Simulation - Step 2
+; NetLogo Soccer Simulation - Step 3
 
 breed [players player]
 breed [balls ball]
 
-globals [team-1-color team-2-color]
+globals [team-1-color team-2-color current-possession]
 
 ; Setup the environment
 to setup
   clear-all
   set team-1-color blue
   set team-2-color red
+
+  ; initialize players
   create-players 4 [
     ifelse (who < 2)
       [set color team-1-color]
@@ -18,32 +20,65 @@ to setup
     setxy random-xcor random-ycor
     set size 2
   ]
-  create-balls 1 [
-    set shape "circle"
-    setxy random-xcor random-ycor
-    set color white
+
+  ;Determine initial possession and assign the ball to a player from that team
+  ifelse random 2 = 0 [
+    set current-possession team-1-color
+    let initial-player one-of players with [color = team-1-color]
+    create-balls 1 [
+      setxy [xcor] of initial-player [ycor] of initial-player
+      set color white
+      set shape "circle"
+    ]
+  ][
+    set current-possession team-2-color
+    let initial-player one-of players with [color = team-2-color]
+    create-balls 1 [
+      setxy [xcor] of initial-player [ycor] of initial-player
+      set color white
+      set shape "circle"
+    ]
   ]
   reset-ticks
 end
 
 ; Main loop
 to go
-  move-players-with-ball
+  move-players
   pass-ball
+  check-possession-change
   tick
 end
 
 ; Define player behavior
-to move-players-with-ball
+to move-players
   ask players [
     if any? balls in-radius 1 [
-      ; players with the ball move towards the goal
-      move-to-goal
+      ; if the player is near the ball, consider the ball in possession
+      set current-possession color
     ]
-    if not any? balls in-radius 1 [
-      ; Random movement for players without the ball
-      right random 360
-      forward 1
+    ifelse color = current-possession[
+      ;players with possession move towards the goal
+      move-to-goal
+    ] [
+      ;players without possession move towards the ball
+      move-towards-ball
+    ]
+  ]
+end
+
+to move-towards-ball
+  let nearest-ball min-one-of balls [distance myself]
+  ; min-one-of finds the agent with the minimum value of a given reporter, in this case, finds the ball with the minimum distance from the current player
+  ; [distance
+  face nearest-ball
+  forward 1
+end
+
+to check-possession-change
+  ask players [
+    if color != current-possession and any? balls in-radius 1 [
+      set current-possession color ; switch possession
     ]
   ]
 end
@@ -74,8 +109,8 @@ end
 GRAPHICS-WINDOW
 210
 10
-621
-422
+361
+162
 -1
 -1
 13.0
@@ -88,10 +123,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--15
-15
--15
-15
+-5
+5
+-5
+5
 0
 0
 1
