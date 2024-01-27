@@ -1,4 +1,4 @@
-; NetLogo Soccer Simulation - Step 3
+; NetLogo Football Simulation - Step 4
 
 breed [players player]
 breed [balls ball]
@@ -47,6 +47,7 @@ to go
   move-players
   pass-ball
   check-possession-change
+  attempt-interception
   tick
 end
 
@@ -70,7 +71,9 @@ end
 to move-towards-ball
   let nearest-ball min-one-of balls [distance myself]
   ; min-one-of finds the agent with the minimum value of a given reporter, in this case, finds the ball with the minimum distance from the current player
-  ; [distance
+  ; [distance myself] reports the distance from the current agent to each ball in the balls agentset
+  ; distance reports the distance
+  ; myself refers to the agent executing the block of code, in this case the player
   face nearest-ball
   forward 1
 end
@@ -105,12 +108,20 @@ to pass-ball
     ]
   ]
 end
+
+to attempt-interception
+  ask players with [color != possession][
+    let player-with-ball one-of players with [any? balls in-radius 1 and color = current-possession]
+    if player-with-ball != nobody [
+      face player-with-ball
+      forward 1 ; Adjust this for interception speed
+      if distance player-with-ball
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
 10
-361
-162
+621
+422
 -1
 -1
 13.0
@@ -123,10 +134,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--5
-5
--5
-5
+-15
+15
+-15
+15
 0
 0
 1

@@ -1,4 +1,4 @@
-; NetLogo Soccer Simulation - Step 3
+; NetLogo Football Simulation - Step 4
 
 breed [players player]
 breed [balls ball]
@@ -47,6 +47,7 @@ to go
   move-players
   pass-ball
   check-possession-change
+  attempt-interception
   tick
 end
 
@@ -107,12 +108,26 @@ to pass-ball
     ]
   ]
 end
+
+to attempt-interception
+  ask players with [color != current-possession][
+    let player-with-ball one-of players with [any? balls in-radius 1 and color = current-possession]
+    if player-with-ball != nobody [
+      face player-with-ball
+      forward 1 ; Adjust this for interception speed
+      if distance player-with-ball < 1 [
+        ; interception logic - can be expanded based on conditions
+        set current-possession color
+      ]
+    ]
+  ]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
 10
-361
-162
+621
+422
 -1
 -1
 13.0
@@ -125,10 +140,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--5
-5
--5
-5
+-15
+15
+-15
+15
 0
 0
 1
