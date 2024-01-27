@@ -14,10 +14,8 @@ This project is a step-by-step development of a soccer simulation in NetLogo. It
 - Separate branches for each development step (e.g., `step-1`, `step-2`, etc.).
 - Step-specific README files provide details about each stage of development.
 
-## Current Progress: Step 4
-- Implemented defensive strategies with movement towards the player in possession for potential interception.
-- Added logic for ball interception and possession switching.
-
+## Current Progress: Step 5
+- Teams have been expanded to five players each, and player movement logic has been enhanced to maintain team formation and prevent clustering.
 
 ## Previous Steps:
 #### Step 1
@@ -32,5 +30,9 @@ This project is a step-by-step development of a soccer simulation in NetLogo. It
 - Implemented team possession mechanics.
 - Players now move strategically towards the ball to gain possession.
 
+#### Step 4
+- Implemented defensive strategies with movement towards the player in possession for potential interception.
+- Added logic for ball interception and possession switching.
+
 ## Next Steps
-- Step 5 will focus on refining team strategies, improving player movements, and introducing more sophisticated game mechanics.
+-  Step 6 will focus on improving player decision-making and introducing more nuanced team strategies.

@@ -1,4 +1,4 @@
-; NetLogo Football Simulation - Step 4
+; NetLogo Football Simulation - Step
 
 breed [players player]
 breed [balls ball]
@@ -12,8 +12,8 @@ to setup
   set team-2-color red
 
   ; initialize players
-  create-players 4 [
-    ifelse (who < 2)
+  create-players 10 [
+    ifelse (who < 5)
       [set color team-1-color]
       [set color team-2-color]
     set shape "person"
@@ -54,16 +54,25 @@ end
 ; Define player behavior
 to move-players
   ask players [
-    if any? balls in-radius 1 [
-      ; if the player is near the ball, consider the ball in possession
-      set current-possession color
-    ]
-    ifelse color = current-possession[
-      ;players with possession move towards the goal
-      move-to-goal
+    ; Check for nearest teammate and maintain distance
+    let nearest-teammate min-one-of other players with [color = [color] of myself] [distance myself]
+    ifelse nearest-teammate != nobody and distance nearest-teammate < 3 [
+      ; move away from teammate
+      turn-away-from nearest-teammate
     ] [
-      ;players without possession move towards the ball
-      move-towards-ball
+      ;;
+      ; Regular play movement
+      if any? balls in-radius 1 [
+        ; if the player is near the ball, consider the ball in possession
+        set current-possession color
+      ]
+      ifelse color = current-possession[
+        ;players with possession move towards the goal
+        move-to-goal
+      ] [
+        ;players without possession move towards the ball
+        move-towards-ball
+      ]
     ]
   ]
 end
@@ -91,6 +100,12 @@ to move-to-goal
   ; to be implemented in next step
 end
 
+to turn-away-from [agent]
+  face agent
+  right 180
+  forward 1
+end
+
 ; Passing the ball
 to pass-ball
   ask players [
@@ -110,12 +125,18 @@ to pass-ball
 end
 
 to attempt-interception
-  ask players with [color != possession][
+  ask players with [color != current-possession][
     let player-with-ball one-of players with [any? balls in-radius 1 and color = current-possession]
     if player-with-ball != nobody [
       face player-with-ball
       forward 1 ; Adjust this for interception speed
-      if distance player-with-ball
+      if distance player-with-ball < 1 [
+        ; interception logic - can be expanded based on conditions
+        set current-possession color
+      ]
+    ]
+  ]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
